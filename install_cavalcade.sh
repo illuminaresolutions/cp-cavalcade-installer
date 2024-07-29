@@ -17,7 +17,7 @@ WORDPRESS_ROOT="/home/${SITE_USER}/htdocs/${DOMAIN}"
 MU_PLUGINS_DIR="${WORDPRESS_ROOT}/wp-content/mu-plugins"
 LOG_DIR="/home/${SITE_USER}/logs/cron"
 TASK_MANAGER_SCRIPT="${MU_PLUGINS_DIR}/cavalcade/task_manager.sh"
-CRON_OUTPUT="/tmp/cavalcadestart"
+CRON_OUTPUT="{LOG_DIR}/cavalcadestart.log"
 
 # Ensure running as ubuntu user
 if [ "$USER" != "ubuntu" ]; then
@@ -30,6 +30,7 @@ sudo -u ${SITE_USER} bash <<EOF
 mkdir -p ${MU_PLUGINS_DIR}
 mkdir -p ${LOG_DIR}
 touch ${LOG_DIR}/cavalcade.log
+touch ${LOG_DIR}/cavalcadestart.log
 EOF
 
 # Clone repositories and set up files as the site user
