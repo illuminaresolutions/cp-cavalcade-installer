@@ -63,11 +63,16 @@ cd \${WORDPRESSROOT}/wp-content/mu-plugins/cavalcade
 # Check if Cavalcade is listed in ps for this specific site
 ISCAVALCADEALIVE=\$(ps -aux | grep -v grep | grep "mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT}")
 
+# Function to log with timestamp
+log_with_timestamp() {
+    echo "\$(date '+%Y-%m-%d %H:%M:%S') - \$1" >> \${LOG_DIR}/cavalcade.log
+}
+
 # Restart Cavalcade if it isn't listed, otherwise chill
 if [[ -z "\${ISCAVALCADEALIVE}" ]]; then
-    echo "Cavalcade is not running, starting now..."
-    nohup /usr/bin/php \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} > ${LOG_DIR}/cavalcade.log 2>&1 &
-    echo "All is well. Cavalcade is running for \${WORDPRESSROOT}."
+    log_with_timestamp "Cavalcade is not running, starting now..."
+    nohup /usr/bin/php -d error_reporting="E_ALL & ~E_DEPRECATED" \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} > ${LOG_DIR}/cavalcade.log 2>&1 &
+    log_with_timestamp "All is well. Cavalcade is running for \${WORDPRESSROOT}."
 fi
 EOF
 
