@@ -17,7 +17,7 @@ WORDPRESS_ROOT="/home/${SITE_USER}/htdocs/${DOMAIN}"
 MU_PLUGINS_DIR="${WORDPRESS_ROOT}/wp-content/mu-plugins"
 LOG_DIR="/home/${SITE_USER}/logs/cron"
 TASK_MANAGER_SCRIPT="${MU_PLUGINS_DIR}/cavalcade/task_manager.sh"
-CRON_OUTPUT="{LOG_DIR}/cavalcadestart.log"
+CRON_OUTPUT="${LOG_DIR}/cavalcadestart.log"
 
 # Ensure running as ubuntu user
 if [ "$USER" != "ubuntu" ]; then
