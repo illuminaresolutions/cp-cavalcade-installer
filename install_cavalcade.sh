@@ -74,7 +74,7 @@ log_with_timestamp() {
 # Restart Cavalcade if it isn't listed, otherwise chill
 if [[ -z "\${ISCAVALCADEALIVE}" ]]; then
     echo "\$(date '+%Y-%m-%d %H:%M:%S') - Cavalcade is not running, starting now..." >> \${LOG_DIR}/cavalcade.log
-    nohup /usr/bin/php -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_NOTICE" \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} 2>&1 | log_with_timestamp &
+    nohup /usr/bin/php -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_NOTICE" -d display_errors=Off \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} 2>&1 | log_with_timestamp &
     echo "\$(date '+%Y-%m-%d %H:%M:%S') - All is well. Cavalcade is running for \${WORDPRESSROOT}." >> \${LOG_DIR}/cavalcade.log
 fi
 EOF
