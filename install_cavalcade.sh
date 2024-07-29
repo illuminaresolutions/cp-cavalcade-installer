@@ -56,6 +56,7 @@ export PATH="${USER_PATH}"
 
 # Set the absolute root for your site
 WORDPRESSROOT="${WORDPRESS_ROOT}/"
+LOG_DIR="/home/${SITE_USER}/logs/cron"
 
 # Define the Cavalcade path
 cd \${WORDPRESSROOT}/wp-content/mu-plugins/cavalcade
@@ -66,15 +67,15 @@ ISCAVALCADEALIVE=\$(ps -aux | grep -v grep | grep "mu-plugins/cavalcade/runner/b
 # Function to log with timestamp
 log_with_timestamp() {
     while IFS= read -r line; do
-        echo "\$(date '+%Y-%m-%d %H:%M:%S') - \$line"
+        echo "\$(date '+%Y-%m-%d %H:%M:%S') - \$line" >> \${LOG_DIR}/cavalcade.log
     done
 }
 
 # Restart Cavalcade if it isn't listed, otherwise chill
 if [[ -z "\${ISCAVALCADEALIVE}" ]]; then
-    log_with_timestamp <<< "Cavalcade is not running, starting now..." >> \${LOG_DIR}/cavalcade.log
-    nohup /usr/bin/php -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_NOTICE" \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} 2>&1 | log_with_timestamp >> \${LOG_DIR}/cavalcade.log &
-    log_with_timestamp <<< "All is well. Cavalcade is running for \${WORDPRESSROOT}." >> \${LOG_DIR}/cavalcade.log
+    echo "\$(date '+%Y-%m-%d %H:%M:%S') - Cavalcade is not running, starting now..." >> \${LOG_DIR}/cavalcade.log
+    nohup /usr/bin/php -d error_reporting="E_ALL & ~E_DEPRECATED & ~E_NOTICE" \${WORDPRESSROOT}wp-content/mu-plugins/cavalcade/runner/bin/cavalcade \${WORDPRESSROOT} 2>&1 | log_with_timestamp &
+    echo "\$(date '+%Y-%m-%d %H:%M:%S') - All is well. Cavalcade is running for \${WORDPRESSROOT}." >> \${LOG_DIR}/cavalcade.log
 fi
 EOF
 
